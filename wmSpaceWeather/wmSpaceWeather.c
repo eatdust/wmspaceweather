@@ -155,9 +155,14 @@ FILE		*fp;
 
     openXwindow(argc, argv, wmSpaceWeather_master, wmSpaceWeather_mask_bits, wmSpaceWeather_mask_width, wmSpaceWeather_mask_height);
 
-
-
-
+    /*
+     * Initializing fluxes to negative values
+     */
+    E1 = -1.0;
+    E2 = -1.0;
+    P1 = -1.0;
+    P2 = -1.0;
+    P3 = -1.0;
     /*
      *  Loop until we die
      */
