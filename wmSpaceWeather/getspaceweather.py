@@ -2,7 +2,7 @@
 
 #   This file is designed for creating output read by wmSpaceWeather
 #
-#   Copyright (C) 2024 Chris Ringeval
+#   Copyright (C) 2024-2026 Chris Ringeval
 #
 #   getspaceweather is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -139,8 +139,9 @@ def getLastKpIndices(t,dt,n):
         
     return  dates, wmdates, Kps
     
-
-def getElectronFluxes(t,dt):
+# Old json format, energy label was a well-defined and readable energy
+# range. This was probably too nice for keeping the same format, see below.
+def getOldElectronFluxes(t,dt):
     endtime = t
     
     url = geosEspectra
@@ -214,6 +215,84 @@ def getElectronFluxes(t,dt):
     E2MeV= [sum(x) for x in zip(E9flux,E10flux)]
 
     return meastime, Elowflux, E800KeV, E2MeV
+
+#GEOS-19 new format, energy band inferred from:
+#https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/goes16/l2/docs/GOES-R_SEISS_L2_MPS-HI.ReadMe.pdf
+def getElectronFluxes(t,dt):
+    endtime = t
+    
+    url = geosEspectra
+    result = requests.get(url).json()
+
+    E1flux = []
+    E2flux = []
+    E3flux = []
+    E4flux = []
+    E5flux = []
+    E6flux = []
+    E7flux = []
+    E8flux = []
+    E9flux = []
+    E10flux = []
+    meastime = []
+
+    dE1 = 80-50
+    dE2 = 140-80
+    dE3 = 200-140
+    dE4 = 300-200
+    dE5 = 450-300
+    dE6 = 700-450
+    dE7 = 1100-700
+    dE8 = 1700-1100
+    dE9 = 2600-1700
+    dE10 = 4000-2600
+    
+    for i in range(len(result)-1,-1,-1):
+        achannel = result[i]
+        atime = datetime.strptime(achannel['time_tag'],swtimeformat).replace(tzinfo=timezone.utc)
+        if (endtime - atime < dt):
+            match achannel['energy']:
+                case '79 keV':
+                    E1flux.append(dE1*achannel['flux'])
+                case '134 keV':
+                    E2flux.append(dE2*achannel['flux'])
+                case '186 keV':
+                    E3flux.append(dE3*achannel['flux'])
+                case '271 keV':
+                    E4flux.append(dE4*achannel['flux'])
+                case '378 keV':
+                    E5flux.append(dE5*achannel['flux'])
+                case '548 keV':
+                    E6flux.append(dE6*achannel['flux'])
+                case '865 keV':
+                    E7flux.append(dE7*achannel['flux'])
+                case '1509 keV':
+                    E8flux.append(dE8*achannel['flux'])
+                case '2205 keV':
+                    E9flux.append(dE9*achannel['flux'])
+                case '2894 keV':
+                    E10flux.append(dE10*achannel['flux'])
+                case others:
+                    print('energy channel missed: ',achannel['energy'])
+
+            lastsaved = meastime[-1:]
+            if lastsaved:
+                if (atime != lastsaved[0]):
+                    meastime.append(atime)
+            else:
+                meastime.append(atime)
+    
+
+#wmspaceweather has only two electron channels to display, let's bin
+#the spectrum into ~non-relativisic (<800 KeV), relativistic (>800 KeV), only highly
+#relativistic (>2MeV)
+
+    Elowflux = [sum(x) for x in zip(E1flux,E2flux,E3flux,E4flux,E5flux,E6flux)]
+    E800KeV = [sum(x) for x in zip(E7flux,E8flux,E9flux,E10flux)]
+    E2MeV= [sum(x) for x in zip(E9flux,E10flux)]
+
+    return meastime, Elowflux, E800KeV, E2MeV
+
 
 
 def getProtonFluxes(t,dt):
