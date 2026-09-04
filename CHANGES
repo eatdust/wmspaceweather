@@ -6,7 +6,7 @@ Version         Description
 		  Cleaning source files and updating various README files
 		  
 1.05		- released May 18, 2024
-         	  Support for real valued Kp, new pyton script to
+         	  Support for real valued Kp, new python script to
 		  retrieve and compute fluxes (getspaceweather.py)
 		  
 1.04 		- released Feb 18, 1999
