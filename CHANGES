@@ -2,6 +2,9 @@ wmSpaceWeather changes.
 
 Version         Description
 -------------------------------------------------------------------------
+1.07		-released Sep 04, 2026
+		  New e- fluxes json format in getspaceweather.py (GEOS-19)
+		  
 1.06		- released  Sep 03, 2026
 		  Cleaning source files and updating various README files
 		  
