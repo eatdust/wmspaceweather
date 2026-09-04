@@ -2,6 +2,13 @@ wmSpaceWeather changes.
 
 Version         Description
 -------------------------------------------------------------------------
+1.06		- released  Sep 03, 2026
+		  Cleaning source files and updating various README files
+		  
+1.05		- released May 18, 2024
+         	  Support for real valued Kp, new pyton script to
+		  retrieve and compute fluxes (getspaceweather.py)
+		  
 1.04 		- released Feb 18, 1999
 		  Added double click capability. Double clicking on mouse button 1 sends
 		  URL (defined via ne command line option -url) to netscape.
@@ -10,7 +17,6 @@ Version         Description
 		  Changed display a bit. When no data is
 		  available, it now shows nothing (before it would
 		  show false junk...). Modified Perl Script GetKp.
-
 
 1.02 		- released Feb 8, 1999
 		  bug fixes...

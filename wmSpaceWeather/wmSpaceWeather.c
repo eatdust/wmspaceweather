@@ -24,13 +24,14 @@
  *
  *      ~~~ToDo~~~:
  *
- *	- The whole NOAA space weather www site is pretty screwed up! I currently have
+ *	- ~~~ The whole NOAA space weather www site is pretty screwed up! I currently have
  *	  to grab data from 2 separate files to get all that I need. But it seems that
  *        sometimes one of the files shows less than it should. This seems to be related to
  *        the way they update the 2 separate files... I will have to find some way of
- *        making that more robust.
+ *        making that more robust. ~~~
  *
- *      - Seems that there is now a sort of international agreement about spaceweather format.
+ *      - Seems that there is now a sort of international agreement about spaceweather
+ *        format (see getspaceweather.py for more details)
  *
  *
  *
